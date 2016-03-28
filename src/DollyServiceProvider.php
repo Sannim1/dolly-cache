@@ -20,7 +20,7 @@ class DollyServiceProvider extends ServiceProvider
         });
 
         Blade::directive('endcache', function () {
-            return "<?php } echo app('BladeDirective')->tearDown() ?>";
+            return "<?php } echo app('Skurian\Dolly\BladeDirective')->tearDown() ?>";
         });
     }
 
@@ -32,7 +32,11 @@ class DollyServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(BladeDirective::class, function () {
-            return new BladeDirective();
+            return new BladeDirective(
+                new RussianCaching(
+                    app('cache.store')
+                )
+            );
         });
     }
 }

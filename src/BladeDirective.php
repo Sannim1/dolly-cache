@@ -16,7 +16,7 @@ class BladeDirective
      *
      * @param array $keys
      */
-    protected static $keys = [];
+    protected $keys = [];
 
     /**
      * setup the caching mechanism
