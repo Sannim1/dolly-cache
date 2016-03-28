@@ -1,0 +1,19 @@
+{
+    "name": "skurian/dolly-cache",
+    "description": "Russian doll caching for laravel",
+    "license": "MIT",
+    "keywords": ["laravel", "cache"],
+    "authors": [
+        {
+            "name": "Sanni Abdulmusawwir",
+            "email": "sanniabdulmusawwir@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Skurian\\Dolly\\": "src/"
+        }
+    }
+}
