@@ -15,5 +15,13 @@
         "psr-4": {
             "Skurian\\Dolly\\": "src/"
         }
+    },
+    "autoload-dev": {
+        "classmap": ["tests/TestCase.php"]
+    },
+    "require-dev": {
+        "illuminate/database": "^5.2",
+        "phpunit/phpunit": "^4.8",
+        "illuminate/cache": "^5.2"
     }
 }

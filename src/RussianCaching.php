@@ -2,29 +2,43 @@
 
 namespace Skurian\Dolly;
 
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Contracts\Cache\Repository as Cache;
 
 class RussianCaching
 {
-    protected static $keys = [];
+    protected $cache;
 
-    public static function setUp($model)
+    public function __construct(Cache $cache)
     {
-        static::$keys[] = $key = $model->getCacheKey();
-
-        ob_start();
-
-        return Cache::tags('views')->has($key);
+        $this->cache = $cache;
     }
 
-    public static function tearDown()
+    public function put($key, $fragment)
     {
-        $key = array_pop(static::$keys);
+        $key = $this->normalizeCacheKey($key);
 
-        $html = ob_get_clean();
+        return $this->cache
+            ->tags('views')
+            ->rememberForever($key, function () use ($fragment) {
+                return $fragment;
+            });
+    }
 
-        return Cache::tags('views')->rememberForever($key, function () use ($html) {
-            return $html;
-        });
+    public function has($key)
+    {
+        $key = $this->normalizeCacheKey($key);
+
+        return $this->cache
+            ->tags('views')
+            ->has($key);
+    }
+
+    protected function normalizeCacheKey($key)
+    {
+        if ($key instanceof \Illuminate\Database\Eloquent\Model) {
+            $key = $key->getCacheKey();
+        }
+
+        return $key;
     }
 }

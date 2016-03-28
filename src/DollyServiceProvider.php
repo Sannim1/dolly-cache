@@ -4,6 +4,7 @@ namespace Skurian\Dolly;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Skurian\Dolly\BladeDirective;
 
 class DollyServiceProvider extends ServiceProvider
 {
@@ -15,11 +16,11 @@ class DollyServiceProvider extends ServiceProvider
     public function boot()
     {
         Blade::directive('cache', function ($expression) {
-            return "<?php if (! Skurian\Dolly\RussianCaching::setUp{$expression}) { ?>";
+            return "<?php if (! app('Skurian\Dolly\BladeDirective')->setUp{$expression}) { ?>";
         });
 
         Blade::directive('endcache', function () {
-            return "<?php } echo Skurian\Dolly\RussianCaching::tearDown() ?>";
+            return "<?php } echo app('BladeDirective')->tearDown() ?>";
         });
     }
 
@@ -30,6 +31,8 @@ class DollyServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(BladeDirective::class, function () {
+            return new BladeDirective();
+        });
     }
 }
